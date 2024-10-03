@@ -55,7 +55,7 @@ function availability_maxviews_before_footer() {
         return;
     }
 
-    if (empty($COURSE->id)) {
+    if (empty($COURSE->id) || !$PAGE->has_set_url()) {
         return;
     }
 

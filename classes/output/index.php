@@ -61,17 +61,26 @@ class index implements renderable, templatable {
             if (!isset($modinfo->cms[$o->cmid])) {
                 continue;
             }
+
             $params = ['courseid' => $this->courseid, 'id' => $o->id];
             $overrideurl = new moodle_url('/availability/condition/maxviews/override.php', $params);
             $overrides[$key]->overrideurl = $overrideurl->out(false);
             $params['sesskey'] = sesskey();
             $deleteoverrideurl = new moodle_url('/availability/condition/maxviews/delete.php', $params);
             $overrides[$key]->deleteoverrideurl = $deleteoverrideurl->out(false);
-            $overrides[$key]->coursemodule = $modinfo->cms[$o->cmid]->get_formatted_name();
+            if (!empty($modinfo->cms[$o->cmid])) {
+                $overrides[$key]->coursemodule = $modinfo->cms[$o->cmid]->get_formatted_name();
+            } else {
+                $overrides[$key]->coursemodule = get_string('deleted');
+            }
+
             $overrides[$key]->userfullname = fullname($o);
             if (!empty($o->overriderid)) {
                 // The user that did the override process.
                 $overrider = \core_user::get_user($o->overriderid);
+            }
+
+            if (!empty($overrider)) {
                 $overrides[$key]->overrider = fullname($overrider);
                 $overrides[$key]->date = $o->timeupdated;
             } else {
