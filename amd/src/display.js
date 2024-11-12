@@ -60,14 +60,14 @@ export const init = (cmid, render) => {
 };
 
 /**
- * append information about limitation of max number allowed to view a course module.
+ * Append information about limitation of max number allowed to view a course module.
  * @param {number} cmid
  * @param {string} render
  */
 function appendViews(cmid, render) {
     let existed = $("#availability_maxviews_count_" + cmid);
     if (!existed || !existed[0] || existed[0] == undefined) {
-        let module = $("#module-" + cmid + " .description");
+        let module = $("#module-" + cmid + ' .activity-item');
         if (module !== null) {
             module.append(render);
         }
